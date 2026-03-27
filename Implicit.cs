@@ -1,0 +1,15 @@
+global using Microsoft.EntityFrameworkCore;
+global using WebTemplate.Models;
+global using Microsoft.AspNetCore.Mvc;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using WebTemplate.Controllers;
+global using WebTemplate.Enum;
+global using WebTemplate.DTO;
+global using WebTemplate.Data;
+global using WebTemplate.Services;
+//global using WebTemplate.Hubs;
+global using Microsoft.AspNetCore.Authorization;
+global using WebTemplate.Exceptions;
+global using WebTemplate.Repositories;
+global using Microsoft.AspNetCore.SignalR;
