@@ -14,7 +14,8 @@ namespace WebTemplate.Controllers
 
         // 1. KREIRANJE NOVOG ZAHTEVA
         // Poziv: POST /api/Zahtev?posiljalacId=1&dogadjajId=5
-        [HttpPost]
+        //[Authorize(Roles = "Koordinator")]
+        [HttpPost("KreirajZahtev")]
         public async Task<ActionResult<Zahtev>> Create([FromBody] ZahtevDTO dto, [FromQuery] int posiljalacId, [FromQuery] int dogadjajId)
         {
             try
@@ -29,6 +30,7 @@ namespace WebTemplate.Controllers
         }
 
         // 2. SVI ZAHTEVI (Sa svim Include-ovima za tabelu)
+       // [Authorize(Roles = "Koordinator")]
         [HttpGet("detalji")]
         public async Task<ActionResult<IEnumerable<Zahtev>>> GetSveSaDetaljima()
         {
@@ -37,6 +39,7 @@ namespace WebTemplate.Controllers
         }
 
         // 3. SAMO NEDODELJENI (Za koordinatorov "Inbox")
+       // [Authorize(Roles = "Koordinator")]
         [HttpGet("nedodeljeni")]
         public async Task<ActionResult<IEnumerable<Zahtev>>> GetNedodeljeni()
         {
@@ -52,8 +55,7 @@ namespace WebTemplate.Controllers
             return Ok(rezultati);
         }
 
-        // 5. DODELJIVANJE ČLANA ZAHTEVU
-        // Poziv: PATCH /api/Zahtev/10/dodeli?clanId=3&koordinatorId=1
+        //  [Authorize(Roles = "Koordinator")]
         [HttpPatch("{zahtevId}/dodeli")]
         public async Task<IActionResult> Dodeli(int zahtevId, [FromQuery] List<int> clanId, [FromQuery] int koordinatorId)
         {
@@ -69,6 +71,7 @@ namespace WebTemplate.Controllers
         }
 
         // 6. POTVRDA IZVRŠENJA (Završetak posla)
+        //  [Authorize(Roles = "Clan")]
         [HttpPatch("{id}/izvrsi")]
         public async Task<IActionResult> MarkAsCompleted(int id)
         {
@@ -84,6 +87,7 @@ namespace WebTemplate.Controllers
         }
 
         // 7. PROMENA STATUSA (Ručna, ako zatreba)
+        //  [Authorize(Roles = "Clan")]
         [HttpPatch("{id}/status")]
         public async Task<IActionResult> UpdateStatus(int id, [FromQuery] StatusZahteva noviStatus)
         {

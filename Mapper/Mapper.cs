@@ -2,8 +2,6 @@
 public static class Mapper
 {
 
-
-
     public static SesijaDTO MapToDto(Sesija s) => new()
     {
         ImeSesije = s.ImeSesije,

@@ -15,14 +15,25 @@ namespace WebTemplate.Services
             ClanRepo = clanRepo;
         }
 
-        public async Task<IEnumerable<Clan>> VratiSveClanoveAsync(bool sortirajPoZadatku)
-        {
-            if (sortirajPoZadatku)
-            {
-                return await ClanRepo.GetAllSortiranoPoZadacimaAsync();
-            }
-            return await ClanRepo.GetAllClanoviAsync();
-        }
+
+    public async Task<IEnumerable<Clan>> VratiSveClanoveAsync(bool opadajuce)
+{
+    if (opadajuce)
+    {
+        return await ClanRepo.GetAllSortiranoPoZadacimaAsync(); 
+        // DESC (najviše zadataka prvo)
+    }
+    else
+    {
+        return await ClanRepo.GetAllAsync()
+            .ContinueWith(t => t.Result
+                .OrderBy(c => c.BrojIzvrsenihZahteva));
+        // ASC (najmanje zadataka prvo)
+    }
+
+}
+        
+        //salje nacin soritarnja i onda se soritra opadajuce/rastauce u zavisnosti od toga
 
         public async Task<IEnumerable<Clan>> VratiClanovePoStatusuAsync(Status status)
         {
@@ -42,5 +53,16 @@ namespace WebTemplate.Services
             ClanRepo.Update(clan);
             await ClanRepo.SaveChangesAsync();
         }
-    }
+        public async Task<Clan?> VratiClanaPoIdAsync(int id)
+{
+    return await ClanRepo.GetByIdAsync(id);
 }
+
+public async Task<Clan?> VratiClanaPoImenuIPrezimenuAsync(string ime, string prezime)
+{
+    return await ClanRepo.GetClanByImenuIPrezimenuAsync(ime, prezime);
+}
+
+
+    }
+    }

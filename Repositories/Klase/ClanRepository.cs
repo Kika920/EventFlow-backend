@@ -29,5 +29,12 @@ namespace WebTemplate.Repositories
                 .Where(c => c.Status == status)
                 .ToListAsync();
         }
+        public async Task<Clan?> GetClanByImenuIPrezimenuAsync(string ime, string prezime)
+{
+    return await Context.Clanovi
+        .FirstOrDefaultAsync(c =>
+            c.Ime.ToLower() == ime.ToLower() &&
+            c.Prezime.ToLower() == prezime.ToLower());
+}
     }
 }

@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace WebTemplate.Controllers{
 
 [ApiController]
@@ -29,8 +31,11 @@ public class AutentifikacijaController : ControllerBase
     }
 }
 
+
 public class LoginZahtev 
-{
-    public string KorisnickoIme { get; set; } = string.Empty;
-    public string Lozinka { get; set; } = string.Empty;
+{ [JsonPropertyName("KorisnickoIme")] //ovo je dodato
+        public string KorisnickoIme { get; set; } = string.Empty;
+
+        [JsonPropertyName("Lozinka")] //ovo je dodato
+        public string Lozinka { get; set; } = string.Empty;
 }}

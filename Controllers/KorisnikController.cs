@@ -46,7 +46,7 @@ namespace WebTemplate.Controllers
 
        
 
-
+//[Authorize(Roles = "Koordinator,Predavac,Participant")]
         [HttpPut("Izmeni/{id}")]
         public async Task<ActionResult> Update(int id, [FromBody] KorisnikDTO dto)
         {
@@ -61,7 +61,7 @@ namespace WebTemplate.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+//[Authorize(Roles = "Koordinator")]
         [HttpDelete("Obrisi/{id}")]
         public async Task<ActionResult> Delete(int id)
         {

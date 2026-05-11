@@ -9,7 +9,7 @@ public class DogadjajController : ControllerBase
         Service = service;
     }
 
-    [HttpGet]
+    [HttpGet("VratiSveDogadjaje")]
     public async Task<ActionResult> GetAll(){ 
              try
             {
@@ -21,14 +21,14 @@ public class DogadjajController : ControllerBase
                 
         }
 
-    [HttpGet("{id}")]
+    [HttpGet("VratiDogadjaj{id}")]
     public async Task<ActionResult> Get(int id)
     {
         var res = await Service.GetByIdAsync(id);
         return res != null ? Ok(res) : NotFound();
     }
-
-    [HttpPost]
+//[Authorize(Roles = "Koordinator")]
+    [HttpPost("KreirajDogadjaj")]
     public async Task<ActionResult> Create(DogadjajDTO dto)
     { try{
        
@@ -40,16 +40,16 @@ public class DogadjajController : ControllerBase
     }
        
     }
-
-    [HttpPut("{id}")]
+//[Authorize(Roles = "Koordinator")]
+    [HttpPut("IzmeniDogadjaj/{id}")]
     public async Task<IActionResult> Update(int id, DogadjajDTO dto)
     {
         var success = await Service.UpdateAsync(id, dto);
         return success ? NoContent() : NotFound();
     }
-
-    [HttpDelete("{id}")]
-    [Authorize(Roles = "Koordinator")]
+// [Authorize(Roles = "Koordinator")]
+    [HttpDelete("IzbrisiDogadjaj{id}")]
+   
     public async Task<ActionResult> Delete(int id)
     {
       try 

@@ -33,7 +33,8 @@ namespace WebTemplate.Services
             return true;
         }
 
-        public async Task<IEnumerable<Predavac>> FiltrirajPredavaceAsync(string? pretraga, string? komitet, Ishrana? ishrana)
+       public async Task<IEnumerable<Predavac>> FiltrirajPredavaceAsync(string? pretraga, string? komitet, Ishrana? ishrana,
+        bool? imaAlergije)
         {
             var upit = Repository.GetQueryable();
 
@@ -53,8 +54,61 @@ namespace WebTemplate.Services
             {
                 upit = upit.Where(p => p.Ishrana == ishrana.Value);
             }
+                 if (imaAlergije == true)
+    {
+        upit = upit.Where(p =>
+            !string.IsNullOrWhiteSpace(p.Alerigije));
+    }
 
             return await upit.ToListAsync();
         }
+ 
+
+        public async Task<Predavac?> GetByIdAsync(int id)
+        {
+            return await Repository.GetByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<Predavac>>
+            GetAllAsync()
+        {
+            return await Repository.GetAllAsync();
+        }
+
+        public async Task<IEnumerable<Predavac>>
+            GetByKomitetAsync(string komitet)
+        {
+            return await Repository
+                .GetByKomitetAsync(komitet);
+        }
+
+        public async Task<IEnumerable<Predavac>>
+            GetByImeIPrezimeAsync(
+                string ime,
+                string prezime)
+        {
+            return await Repository
+                .GetByImeIPrezimeAsync(
+                    ime,
+                    prezime);
+        }
+
+        public async Task<IEnumerable<Predavac>>
+            GetByVremeDolaskaAsync(DateTime vreme)
+        {
+            return await Repository
+                .GetByVremeDolaskaAsync(vreme);
+        }
+
+        public async Task<IEnumerable<Predavac>>
+            GetByVremeOdlaskaAsync(DateTime vreme)
+        {
+            return await Repository
+                .GetByVremeOdlaskaAsync(vreme);
+        }
+        public async Task<IEnumerable<Predavac>> GetAllWithAlergijeAsync()
+{
+    return await Repository.GetAllWithAlergijeAsync();
+}
     }
 }

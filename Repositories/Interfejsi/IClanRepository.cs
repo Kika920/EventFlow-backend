@@ -6,4 +6,5 @@ public interface IClanRepository : IGenericRepository<Clan>
     Task<IEnumerable<Clan>> GetAllSortiranoPoZadacimaAsync();
     // Sada filtriramo po tvom Status enumu
     Task<IEnumerable<Clan>> GetClanoviPoStatusuAsync(Status status);
+ Task<Clan?> GetClanByImenuIPrezimenuAsync(string ime, string prezime);
 }}

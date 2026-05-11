@@ -16,7 +16,6 @@ namespace WebTemplate.Controllers
         }
 
         [HttpGet("Clan/{clanId}")]
-        [Authorize(Roles = "Clan")]
         public async Task<ActionResult> GetByClan(int clanId)
         {
             try
@@ -29,7 +28,7 @@ namespace WebTemplate.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
+//  [Authorize(Roles = "Clan")]
         [HttpPost("Dodaj/{clanId}")]
         public async Task<IActionResult> AddDostupnost(int clanId, [FromBody] VremeDostupnosti podaci)
         {
@@ -45,7 +44,7 @@ namespace WebTemplate.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+//  [Authorize(Roles = "Clan")]
         [HttpDelete("Obrisi/{id}")]
         public async Task<ActionResult> DeleteDostupnost(int id)
         {

@@ -15,7 +15,7 @@ namespace WebTemplate.Controllers
             KoordinatorService = koordinatorService;
         }
 
-        [HttpGet("PreuzmiSve")]
+        [HttpGet("PreuzmiSveKoordinatore")]
         public async Task<ActionResult> GetAll()
         {
             try
@@ -29,7 +29,7 @@ namespace WebTemplate.Controllers
             }
         }
 
-        [HttpGet("Profil/{id}")]
+        [HttpGet("VratiKoordinatora/{id}")]
         public async Task<IActionResult> GetProfile(int id)
         {
             try
@@ -43,7 +43,9 @@ namespace WebTemplate.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
+//idk da li nam ovo treba jer nema potrebe da se menja tip u realnosti kada neko postane koordiantor ali neka ga za svaki slucaj do krajnjeg roka
+      
+   //   [Authorize(Roles = "Koordinator")]
         [HttpPut("IzmeniTip/{id}")]
         public async Task<IActionResult> UpdateType(int id, [FromQuery] TipKoordinatora noviTip)
         {
@@ -56,21 +58,8 @@ namespace WebTemplate.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
+        }}}
+        //fali obrisi
 
-      /*  [HttpGet("{id}/Dogadjaji")]
-        public async Task<ActionResult> GetEvents(int id)
-        {
-            try
-            {
-                var Dogadjaji = await KoordinatorService.GetMojiDogadjajiAsync(id);
-                return Ok(Dogadjaji);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
- */   }
-}
+
 //upisati jednog koordiantora u bazi
