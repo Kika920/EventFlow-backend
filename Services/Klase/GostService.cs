@@ -101,4 +101,52 @@
 
         return all.ToList();
     }
+    public async Task<IEnumerable<GostDTO>> GetByKomitetAsync(string komitet)
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x =>
+        x.Komitet.ToLower().Contains(komitet.ToLower()));
+}
+    public async Task<IEnumerable<GostDTO>> PretragaAsync(string tekst)
+{
+    var svi = await GetMergedAsync();
+
+    tekst = tekst.ToLower();
+
+    return svi.Where(x =>
+        x.Ime.ToLower().Contains(tekst) ||
+        x.Prezime.ToLower().Contains(tekst));
+}public async Task<IEnumerable<GostDTO>> GetByRoleAsync(Role role)
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x => x.Role == role);
+}public async Task<IEnumerable<GostDTO>> GetSaAlergijamaAsync()
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x =>
+        !string.IsNullOrWhiteSpace(x.Alergije));
+}public async Task<IEnumerable<GostDTO>> GetByIshranaAsync(Ishrana ishrana)
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x => x.Ishrana == ishrana);
+}
+public async Task<IEnumerable<GostDTO>> GetByDolazakAsync(DateTime datum)
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x =>
+        x.VremeDolaska.HasValue &&
+        x.VremeDolaska.Value.Date == datum.Date);
+}public async Task<IEnumerable<GostDTO>> GetByOdlazakAsync(DateTime datum)
+{
+    var svi = await GetMergedAsync();
+
+    return svi.Where(x =>
+        x.VremeOdlaska.HasValue &&
+        x.VremeOdlaska.Value.Date == datum.Date);
+}
 }}
