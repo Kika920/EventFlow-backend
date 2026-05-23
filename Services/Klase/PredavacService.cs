@@ -9,10 +9,10 @@ namespace WebTemplate.Services
             Repository = repository;
         }
 
-        public async Task<Predavac?> GetByMejlAsync(string mejl)
+ /*       public async Task<Predavac?> GetByMejlAsync(string mejl)
         {
             return await Repository.GetByMejlAsync(mejl);
-        }
+        }*/
 
         public async Task<IEnumerable<Sesija>> GetMojeSesijeAsync(int predavacId)
         {

@@ -1,3 +1,4 @@
+namespace WebTemplate.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class DogadjajController : ControllerBase

@@ -3,6 +3,8 @@
 public class SesijaController : ControllerBase
 {
     public SesijaService Service { get; }
+    
+ //   private readonly IPredavacService PredavacService;
     public SesijaController(SesijaService service) => Service = service;
    //  [Authorize(Roles = "Predavac")]
 
@@ -32,4 +34,10 @@ public class SesijaController : ControllerBase
     }
     [HttpGet("Detalji/{id}")]
     public async Task<IActionResult> Get(int id) => Ok(await Service.PreuzmiDetaljeSesijeAsync(id));
+ /*    [HttpGet("{id}/Sesije")]
+    public async Task<ActionResult> GetSesije(int id)
+    {
+        try { return Ok(await PredavacService.GetMojeSesijeAsync(id)); }
+        catch (Exception ex) { return BadRequest(ex.Message); }
+    }*/
 }

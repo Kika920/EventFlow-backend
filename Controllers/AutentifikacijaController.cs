@@ -13,12 +13,18 @@ public class AutentifikacijaController : ControllerBase
     {
         AuthService = authService;
     }
-
-    [HttpPost("Registracija")]
-    public async Task<IActionResult> Registracija([FromBody] KorisnikDTO dto)
+[HttpPost("Registracija")]
+        public async Task<IActionResult> Registracija([FromBody] KorisnikDTO dto)
     {
-        var Rezultat = await AuthService.RegistracijaAsync(dto);
-        return Rezultat ? Ok("Uspešna registracija") : BadRequest("Korisničko ime je zauzeto");
+
+        var uspeh = await AuthService.RegistracijaAsync(dto);
+        if (!uspeh) 
+            return BadRequest("Korisničko ime je zauzeto");
+        var token = await AuthService.LoginAsync(dto.Username, dto.Password);
+
+        if (token == null) 
+            return Unauthorized("Greška pri generisanju tokena nakon registracije");
+        return Ok(new { TokenString = token }); 
     }
 
     [HttpPost("Login")]

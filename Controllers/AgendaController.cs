@@ -5,7 +5,7 @@ namespace WebTemplate.Controllers
     [Route("api/[controller]")]
     public class AgendaController : ControllerBase
     {
-        // Koristimo javni ili zaštićeni Property sa velikim početnim slovom
+    
         public IAgendaService AgendaService { get; }
 
         public AgendaController(IAgendaService agendaService)
@@ -57,6 +57,26 @@ namespace WebTemplate.Controllers
             var Slotovi = await AgendaService.PreuzmiSlobodneSlotoveAsync(agendaId);
             return Ok(Slotovi);
         }
+        [HttpGet("AgendaZaDogadjaj/{dogadjajId}")]
+public async Task<IActionResult> GetAgendaZaDogadjaj(int dogadjajId)
+{
+    var agenda = await AgendaService.PreuzmiAgenduZaDogadjajAsync(dogadjajId);
+
+    if (agenda == null)
+        return NotFound();
+
+    return Ok(agenda);
+}
+[HttpGet("VratiAgendu{id}")]
+public async Task<IActionResult> GetAgenda(int id)
+{
+    var agenda = await AgendaService.PreuzmiAgenduAsync(id);
+
+    if (agenda == null)
+        return NotFound();
+
+    return Ok(agenda);
+}
     }
 }
     

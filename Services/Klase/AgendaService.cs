@@ -69,4 +69,12 @@ public class AgendaService: IAgendaService
                         (d.Sesije == null || !d.Sesije.Any()))
             .ToListAsync();
     }
+    public async Task<Agenda?> PreuzmiAgenduZaDogadjajAsync(int dogadjajId)
+{
+    return await AgendaRepo.GetByDogadjajIdAsync(dogadjajId);
+}
+public async Task<Agenda?> PreuzmiAgenduAsync(int id)
+{
+    return await AgendaRepo.GetAgendaSaDetaljimaAsync(id);
+}
 }}

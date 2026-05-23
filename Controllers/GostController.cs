@@ -54,7 +54,7 @@ public class GostiController : ControllerBase
         return Ok(await _service.GetKomitetiAsync());
     }
 
-    // FILTER PO IMENU i prezimenu
+   /* // FILTER PO IMENU i prezimenu
  [HttpGet("pretraga")]
 public async Task<ActionResult<IEnumerable<GostDTO>>> Pretraga(
     [FromQuery] string tekst)
@@ -106,5 +106,5 @@ public async Task<ActionResult<IEnumerable<GostDTO>>> GetByOdlazak(
     [FromQuery] DateTime datum)
 {
     return Ok(await _service.GetByOdlazakAsync(datum));
-}
+}*/
 }

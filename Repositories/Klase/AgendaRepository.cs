@@ -14,6 +14,12 @@ public class AgendaRepository : GenericRepository<Agenda>, IAgendaRepository
                 .ThenInclude(d => d.Sesije)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
+    public async Task<Agenda?> GetByDogadjajIdAsync(int dogadjajId)
+{
+    return await DbSet
+        .Include(a => a.Delovi)
+        .FirstOrDefaultAsync(a => a.Dogadjaj.Id == dogadjajId);
+}
 }
 /*
         public async Task<List<Deo>> GetDeloviNakonVremenaAsync(int agendaId, DateTime datum, TimeSpan vremeOd)

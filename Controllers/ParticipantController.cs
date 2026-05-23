@@ -33,6 +33,7 @@ public async Task<ActionResult<IEnumerable<Participant>>> GetAll()
     var participants = await ParticipantService.GetAllAsync();
     return Ok(participants);
 }
+/*
 //mozes da korsitis i ovaj filter i mozes one dole pojedinacno ili one iz kontrolera gosti gde je objedinjeno
 //[Authorize(Roles = "Koordinator")]
     [HttpGet("filterZaVise")]
@@ -46,7 +47,8 @@ public async Task<ActionResult<IEnumerable<Participant>>> GetAll()
             .FiltrirajParticipanteAsync(pretraga, komitet, ishrana,alergije);
 
         return Ok(result);
-    }
+    } 
+    
 //[Authorize(Roles = "Koordinator")]
 [HttpGet("ishrana/{ishrana}")]
 public async Task<ActionResult<IEnumerable<Participant>>> GetByIshrana(
@@ -91,5 +93,5 @@ public async Task<ActionResult<IEnumerable<Participant>>> GetByOdlazak(
 public async Task<ActionResult<IEnumerable<Participant>>> GetWithAlergije()
 {
     return Ok(await ParticipantService.GetAllWithAlergijeAsync());
-}
+}*/
 }

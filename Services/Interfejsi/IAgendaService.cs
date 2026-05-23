@@ -10,6 +10,8 @@ namespace WebTemplate.Services
         Task ObrisiAgenduSaSadrzajemAsync(int id);
         Task AzurirajVremeSaPomakomAsync(int deoId, TimeSpan novoVremeOd);
         Task<IEnumerable<Deo>> PreuzmiSlobodneSlotoveAsync(int agendaId);
+     Task<Agenda?> PreuzmiAgenduZaDogadjajAsync(int dogadjajId);
+     Task<Agenda?> PreuzmiAgenduAsync(int id); //id agende
     }
      //   Task<Sesija> DodajSesijuAsync(int deoId, Sesija sesija, int predavacId);
      

@@ -7,9 +7,9 @@ namespace WebTemplate.Repositories
     public async Task<Korisnik?> GetByUsernameAsync(string username) =>
         await DbSet.FirstOrDefaultAsync(u => u.Username == username);
 
-    public async Task<IEnumerable<Korisnik>> SearchByNameAsync(string ime, string prezime) =>
+  /*  public async Task<IEnumerable<Korisnik>> SearchByNameAsync(string ime, string prezime) =>
         await DbSet.Where(u => u.Ime.Contains(ime) && u.Prezime.Contains(prezime)).ToListAsync();
-
+*/
     public async Task<IEnumerable<Korisnik>> GetByRoleAsync(Role role) =>
         await DbSet.Where(u => u.Role == role).ToListAsync();
         public async Task<List<Korisnik>> GetFiltriraniKorisniciAsync(string? ime, string? prezime)

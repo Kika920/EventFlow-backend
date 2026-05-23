@@ -31,6 +31,7 @@ public class PredavacController : ControllerBase
 
             return Ok(predavac);
         }
+        /*
            [HttpGet("filterZaVise")]
     public async Task<ActionResult<IEnumerable<Predavac>>> Filtriraj(
         [FromQuery] string? pretraga,
@@ -97,5 +98,5 @@ public class PredavacController : ControllerBase
 public async Task<ActionResult<IEnumerable<Participant>>> GetWithAlergije()
 {
     return Ok(await PredavacService.GetAllWithAlergijeAsync());
-}
+}*/
     }
