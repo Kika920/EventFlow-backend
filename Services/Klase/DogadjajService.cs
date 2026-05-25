@@ -24,21 +24,37 @@ namespace WebTemplate.Services
             return await Repository.PretraziPoImenuAsync(ime);
         }
 
-        public async Task<Dogadjaj> KreirajDogadjajAsync(DogadjajDTO dto)
-        {
-            var noviDogadjaj = Mapper.Map(dto);
-            
-            noviDogadjaj.Agenda = new Agenda 
-            { 
-                Dogadjaj = noviDogadjaj,
-                Delovi = new List<Deo>() 
-            };
+       public async Task<Dogadjaj> KreirajDogadjajAsync(DogadjajDTO dto)
+{
+    var noviDogadjaj = Mapper.Map(dto);
 
-            await Repository.AddAsync(noviDogadjaj);
-            await Repository.SaveChangesAsync();
-            return noviDogadjaj;
-        }
+    var agenda = new Agenda
+    {
+        Delovi = new List<Deo>()
+    };
 
+    noviDogadjaj.Agenda = agenda;
+
+    await Repository.AddAsync(noviDogadjaj);
+    await Repository.SaveChangesAsync();
+
+    return noviDogadjaj;
+}
+public async Task<bool> DaLiJeAgendaPraznaAsync(int dogadjajId)
+{
+    var dogadjaj = await Repository.DbSet
+        .Include(d => d.Agenda)
+            .ThenInclude(a => a.Delovi)
+        .FirstOrDefaultAsync(d => d.Id == dogadjajId);
+
+    if (dogadjaj == null)
+        throw new Exception("Događaj nije pronađen.");
+
+    if (dogadjaj.Agenda == null)
+        return true;
+
+    return dogadjaj.Agenda.Delovi.Any();
+}
         public async Task<bool> UpdateAsync(int id, DogadjajDTO dto)
         {
             var postojeci = await Repository.GetByIdAsync(id);

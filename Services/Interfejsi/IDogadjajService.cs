@@ -7,7 +7,7 @@
         
         Task<Dogadjaj?> GetByIdAsync(int id);
         
-        // Nova metoda za pretragu
+       Task<bool> DaLiJeAgendaPraznaAsync(int dogadjajId);
         Task<IEnumerable<Dogadjaj>> PretraziPoImenuAsync(string ime);
         
         Task<Dogadjaj> KreirajDogadjajAsync(DogadjajDTO dto);

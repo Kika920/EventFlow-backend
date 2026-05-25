@@ -5,8 +5,8 @@ namespace WebTemplate.Models
     {
         [Key]
         public int Id { get; set; }
-       [ForeignKey("Id")]
-        public virtual Dogadjaj Dogadjaj { get; set; }
+       [ForeignKey("DogadjajId")]
+        public Dogadjaj? Dogadjaj { get; set; }
 [       MaxLength(30)]
         public List<Deo>? Delovi{get;set;}
    

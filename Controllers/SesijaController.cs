@@ -6,8 +6,8 @@ public class SesijaController : ControllerBase
     
  //   private readonly IPredavacService PredavacService;
     public SesijaController(SesijaService service) => Service = service;
-   //  [Authorize(Roles = "Predavac")]
-
+  
+//[Authorize(Roles = "Predavac,Koordinator")]
     [HttpPost("Rezervisi/{deoId}")]
     public async Task<IActionResult> Rezervisi(int deoId, [FromBody] SesijaDTO dto)
     {
@@ -18,7 +18,7 @@ public class SesijaController : ControllerBase
             return Conflict(ex.Message);
         }
     }
-    //[Authorize(Roles = "Predavac")]
+    //[Authorize(Roles = "Predavac,Koordinator")]
 [HttpDelete("Obrisi/{id}")]
     public async Task<IActionResult> Obrisi(int id)
     {

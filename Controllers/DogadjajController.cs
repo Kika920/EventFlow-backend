@@ -66,4 +66,23 @@ public class DogadjajController : ControllerBase
         return StatusCode(500, $"Greška pri brisanju: {ex.Message}"); 
     }
     }
+    [HttpGet("AgendaStatus/{id}")]
+public async Task<IActionResult> AgendaStatus(int id)
+{
+    try
+    {
+        bool prazna = await Service.DaLiJeAgendaPraznaAsync(id);
+
+        return Ok(new
+        {
+            DogadjajId = id,
+            AgendaPrazna = prazna,
+            Status = prazna ? "Prazna" : "Popunjena"
+        });
+    }
+    catch(Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 }

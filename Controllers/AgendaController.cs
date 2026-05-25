@@ -12,7 +12,7 @@ namespace WebTemplate.Controllers
         {
             AgendaService = agendaService;
         }
-
+/*
         [HttpPost("kreiraj")]
         public async Task<IActionResult> KreirajAgendu([FromBody] Agenda agenda)
         {
@@ -22,6 +22,7 @@ namespace WebTemplate.Controllers
             await AgendaService.KreirajAgenduAsync(agenda);
             return Ok(new { Poruka = "Agenda je uspešno kreirana." });
         }
+        */
 
         [HttpDelete("obrisi/{id}")]
         public async Task<IActionResult> ObrisiAgendu(int id)

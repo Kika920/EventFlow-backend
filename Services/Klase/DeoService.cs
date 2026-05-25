@@ -55,15 +55,14 @@ namespace WebTemplate.Services
                 await DeoRepo.SaveChangesAsync();
             }
         }
-
-        public async Task<IEnumerable<Deo>> GetDeloviAgendeAsync(int agendaId)
+         public async Task<IEnumerable<Deo>> GetDeloviAgendeAsync(int agendaId)
         {
-            return await DeoRepo.DbSet
-                .Include(d => d.Sesije)
-                .Where(d => d.Agenda!.Id == agendaId)
-                .OrderBy(d => d.Datum)
-                .ThenBy(d => d.VremeOd)
-                .ToListAsync();
+                return await DeoRepo.DbSet 
+                    .Include(d => d.Sesije)
+                    .Where(d => d.agendaId == agendaId)
+                    .OrderBy(d => d.Datum)
+                    .ThenBy(d => d.VremeOd)
+                    .ToListAsync();
         }
     }
 }

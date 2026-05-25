@@ -8,7 +8,7 @@ namespace WebTemplate.Models
 
         public TipPodeoka? Tip { get; set; }
       public Agenda? Agenda{get;set;}
-   
+    public int agendaId {get;set;} 
         public List<Sesija>? Sesije{get;set;}
     public required DateTime Datum { get; set; }
     public required TimeSpan VremeOd { get; set; }

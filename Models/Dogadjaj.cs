@@ -22,6 +22,6 @@ public required DateTime DatumDo { get; set; }
     public List<Participant>? Participanti { get; set; }
      public List<Clan>? Clanovi { get; set; }
 
-    public virtual Agenda? Agenda { get; set; }
+    public Agenda? Agenda { get; set; }
 }
 }
