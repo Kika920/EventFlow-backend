@@ -27,39 +27,54 @@ public class AgendaService: IAgendaService
         }
     }
 
-    public async Task AzurirajVremeSaPomakomAsync(int deoId, TimeSpan novoVremeOd)
+  public async Task AzurirajVremeSaPomakomAsync(int deoId, int pomakMinuta)
+{
+    var deoKojiSeMenja = await DeoRepo.DbSet
+        .Include(d => d.Agenda)
+        .Include(d => d.Sesije)
+        .FirstOrDefaultAsync(d => d.Id == deoId);
+
+    if (deoKojiSeMenja == null)
+        throw new Exception("Deo nije pronađen.");
+
+    var pomak = TimeSpan.FromMinutes(pomakMinuta);
+
+    var deloviZaPomak = await DeoRepo.DbSet
+        .Include(d => d.Sesije)
+        .Where(d =>
+            d.agendaId == deoKojiSeMenja.agendaId &&
+            (
+                d.Datum > deoKojiSeMenja.Datum ||
+                (
+                    d.Datum == deoKojiSeMenja.Datum &&
+                    d.VremeOd >= deoKojiSeMenja.VremeOd
+                )
+            )
+        )
+        .OrderBy(d => d.Datum)
+        .ThenBy(d => d.VremeOd)
+        .ToListAsync();
+
+    foreach (var deo in deloviZaPomak)
     {
-        var deoKojiSeMenja = await DeoRepo.GetByIdAsync(deoId);
-        if (deoKojiSeMenja == null) return;
+        deo.VremeOd += pomak;
+        deo.VremeDo += pomak;
 
-        TimeSpan pomak = novoVremeOd - deoKojiSeMenja.VremeOd;
-
-        // Uzimamo sve delove te agende koji su hronološki posle ovog
-        var deloviZaPomak = await DeoRepo.DbSet
-            .Include(d => d.Sesije)
-            .Where(d => d.Agenda!.Id == deoKojiSeMenja.Agenda!.Id && d.VremeOd >= deoKojiSeMenja.VremeOd)
-            .OrderBy(d => d.VremeOd)
-            .ToListAsync();
-
-        foreach (var deo in deloviZaPomak)
+        if (deo.Sesije != null)
         {
-            deo.VremeOd += pomak;
-            deo.VremeDo += pomak;
-
-            // Ako u slotu postoji sesija, pomeramo i njeno vreme unutar slota
-            if (deo.Sesije != null)
+            foreach (var sesija in deo.Sesije)
             {
-                foreach (var s in deo.Sesije)
-                {
-                    if (s.VremePocetka.HasValue) s.VremePocetka += pomak;
-                    if (s.VremeKraja.HasValue) s.VremeKraja += pomak;
-                }
+                if (sesija.VremePocetka.HasValue)
+                    sesija.VremePocetka += pomak;
+
+                if (sesija.VremeKraja.HasValue)
+                    sesija.VremeKraja += pomak;
             }
-            DeoRepo.Update(deo);
         }
-        await DeoRepo.SaveChangesAsync();
     }
 
+    await DeoRepo.SaveChangesAsync();
+}
     public async Task<IEnumerable<Deo>> PreuzmiSlobodneSlotoveAsync(int agendaId)
     {
         return await DeoRepo.DbSet

@@ -25,7 +25,15 @@ namespace WebTemplate.Services
 
             // Vežemo termin za pronađenog člana
             podaci.Clan = clan;
+var postojeciTermini =await VremeRepo.GetByClanIdAsync(clanId);
 
+bool preklapanje = postojeciTermini.Any(t =>
+    t.Datum.Date == podaci.Datum.Date &&
+    podaci.VremeOd < t.VremeDo &&
+    podaci.VremeDo > t.VremeOd);
+
+if (preklapanje)
+    throw new Exception( "Termin se preklapa sa postojećim terminom.");
             await VremeRepo.AddAsync(podaci);
             await VremeRepo.SaveChangesAsync();
             

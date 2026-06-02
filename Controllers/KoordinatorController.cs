@@ -29,20 +29,22 @@ namespace WebTemplate.Controllers
             }
         }
 
-        [HttpGet("VratiKoordinatora/{id}")]
-        public async Task<IActionResult> GetProfile(int id)
-        {
-            try
-            {
-                var Koordinator = await KoordinatorService.GetByIdAsync(id);
-                if (Koordinator == null) return NotFound("Koordinator nije pronađen.");
-                return Ok(Koordinator);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
+ //    [Authorize(Roles = "Koordinator")]
+[HttpGet("MojProfil")]
+public async Task<IActionResult> MojProfil()
+{
+    var userId = int.Parse(
+        User.FindFirst(ClaimTypes.NameIdentifier)!
+            .Value);
+
+    var koordinator =
+        await KoordinatorService.GetByIdAsync(userId);
+
+    if (koordinator == null)
+        return NotFound();
+
+    return Ok(koordinator);
+}
 //idk da li nam ovo treba jer nema potrebe da se menja tip u realnosti kada neko postane koordiantor ali neka ga za svaki slucaj do krajnjeg roka
       
    //   [Authorize(Roles = "Koordinator")]

@@ -19,18 +19,21 @@ public class PredavacController : ControllerBase
             return Ok(predavaci);
         }
 
-        [HttpGet("VratiPredavaca{id}")]
-        public async Task<ActionResult<Predavac>>
-            GetById(int id)
-        {
-            var predavac =
-                await PredavacService.GetByIdAsync(id);
+[HttpGet("MojProfil")]
+public async Task<IActionResult> MojProfil()
+{
+    var userId = int.Parse(
+        User.FindFirst(ClaimTypes.NameIdentifier)!
+            .Value);
 
-            if (predavac == null)
-                return NotFound();
+    var predavac =
+        await PredavacService.GetByIdAsync(userId);
 
-            return Ok(predavac);
-        }
+    if (predavac == null)
+        return NotFound();
+
+    return Ok(predavac);
+}
         /*
            [HttpGet("filterZaVise")]
     public async Task<ActionResult<IEnumerable<Predavac>>> Filtriraj(

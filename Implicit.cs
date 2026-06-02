@@ -13,3 +13,4 @@ global using Microsoft.AspNetCore.Authorization;
 global using WebTemplate.Exceptions;
 global using WebTemplate.Repositories;
 global using Microsoft.AspNetCore.SignalR;
+global using System.Security.Claims;

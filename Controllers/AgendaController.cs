@@ -38,20 +38,22 @@ namespace WebTemplate.Controllers
             }
         }
 
-        [HttpPut("pomeri-vreme/{deoId}")]
-        public async Task<IActionResult> AzurirajVreme(int deoId, [FromBody] TimeSpan novoVremeOd)
+    [HttpPut("pomeri-vreme/{deoId}")]
+public async Task<IActionResult> AzurirajVreme(int deoId, [FromBody] int pomakMinuta)
+{
+    try
+    {
+        await AgendaService.AzurirajVremeSaPomakomAsync(deoId, pomakMinuta);
+        return Ok(new
         {
-            try
-            {
-                await AgendaService.AzurirajVremeSaPomakomAsync(deoId, novoVremeOd);
-                return Ok(new { Poruka = "Vreme uspešno ažurirano sa pomakom za sve naredne stavke." });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
+            Poruka = $"Agenda je pomerena za {pomakMinuta} minuta."
+        });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
         [HttpGet("slobodni-slotovi/{agendaId}")]
         public async Task<IActionResult> GetSlobodniSlotovi(int agendaId)
         {
@@ -70,6 +72,7 @@ public async Task<IActionResult> GetAgendaZaDogadjaj(int dogadjajId)
 }
 [HttpGet("VratiAgendu{id}")]
 public async Task<IActionResult> GetAgenda(int id)
+
 {
     var agenda = await AgendaService.PreuzmiAgenduAsync(id);
 

@@ -8,7 +8,7 @@ namespace WebTemplate.Services
     {
         Task KreirajAgenduAsync(Agenda agenda);
         Task ObrisiAgenduSaSadrzajemAsync(int id);
-        Task AzurirajVremeSaPomakomAsync(int deoId, TimeSpan novoVremeOd);
+        Task AzurirajVremeSaPomakomAsync(int deoId, int pomakMinuta);
         Task<IEnumerable<Deo>> PreuzmiSlobodneSlotoveAsync(int agendaId);
      Task<Agenda?> PreuzmiAgenduZaDogadjajAsync(int dogadjajId);
      Task<Agenda?> PreuzmiAgenduAsync(int id); //id agende

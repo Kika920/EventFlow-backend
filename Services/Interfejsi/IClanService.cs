@@ -6,10 +6,17 @@ namespace WebTemplate.Services
 {
     public interface IClanService
     {
-        Task<IEnumerable<Clan>> VratiSveClanoveAsync(bool opadajuce);
-        Task<IEnumerable<Clan>> VratiClanovePoStatusuAsync(Status status);
+        // Vraća sve članove, a parametar 'opadajuce' određuje da li su sortirani po broju zadataka
+Task<IEnumerable<Clan>> VratiSveClanoveAsync(bool? opadajuce, Status? status);        
+        
+        // Menja status člana i automatski ažurira/cepa termine u tabeli dostupnosti
         Task PromeniStatusClanaAsync(int clanId, Status noviStatus);
+        
+        // Vraća jednog člana preko ID-ja sa osveženim trenutnim statusom (za profil)
         Task<Clan?> VratiClanaPoIdAsync(int id);
-Task<Clan?> VratiClanaPoImenuIPrezimenuAsync(string ime, string prezime);
+        
+        // Pretraga člana po imenu i prezimenu sa osveženim trenutnim statusom
+        Task<Clan?> VratiClanaPoImenuIPrezimenuAsync(string ime, string prezime);
+   
     }
 }

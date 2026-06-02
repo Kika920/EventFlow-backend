@@ -16,10 +16,16 @@ public class ParticipantController : ControllerBase
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
-    [HttpGet("VratiParticipanta/{id}")]
-public async Task<ActionResult<Participant>> GetById(int id)
+
+[HttpGet("MojProfil")]
+public async Task<IActionResult> MojProfil()
 {
-    var participant = await ParticipantService.GetByIdAsync(id);
+    var userId = int.Parse(
+        User.FindFirst(ClaimTypes.NameIdentifier)!
+            .Value);
+
+    var participant =
+        await ParticipantService.GetByIdAsync(userId);
 
     if (participant == null)
         return NotFound();

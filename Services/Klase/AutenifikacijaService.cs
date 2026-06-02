@@ -75,7 +75,7 @@ namespace WebTemplate.Services
     return await _repo.SaveChangesAsync() > 0;
 }
 
-        public async Task<string?> LoginAsync(string username, string password)
+        public async Task<LoginResponseDTO?> LoginAsync(string username, string password)
         {
             var user = await _repo.GetByUsernameAsync(username);
             
@@ -84,8 +84,13 @@ namespace WebTemplate.Services
             {
                 return null;
             }
-
-            return GenerisiJwtToken(user);
+return new LoginResponseDTO
+{
+    TokenString = GenerisiJwtToken(user),
+    UserId = user.Id,
+    Username = user.Username,
+    Role = user.Role.ToString()
+};
         }
 
         private string GenerisiJwtToken(Korisnik user)

@@ -15,19 +15,20 @@ namespace WebTemplate.Controllers
         // 1. KREIRANJE NOVOG ZAHTEVA
         // Poziv: POST /api/Zahtev?posiljalacId=1&dogadjajId=5
         //[Authorize(Roles = "Koordinator")]
-        [HttpPost("KreirajZahtev")]
-        public async Task<ActionResult<Zahtev>> Create([FromBody] ZahtevDTO dto, [FromQuery] int posiljalacId, [FromQuery] int dogadjajId)
-        {
-            try
-            {
-                var noviZahtev = await ZahtevService.KreirajZahtevAsync(dto, posiljalacId, dogadjajId);
-                return CreatedAtAction(nameof(GetSveSaDetaljima), new { id = noviZahtev.Id }, noviZahtev);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+[HttpPost("KreirajZahtev")]
+public async Task<ActionResult<Zahtev>> Create([FromBody] ZahtevDTO dto,[FromQuery] int dogadjajId)
+{
+    var posiljalacId =
+        int.Parse(User.FindFirst( ClaimTypes.NameIdentifier)!.Value);
+
+    var noviZahtev =
+        await ZahtevService.KreirajZahtevAsync(
+            dto,
+            posiljalacId,
+            dogadjajId);
+
+    return Ok(noviZahtev);
+}
 
         // 2. SVI ZAHTEVI (Sa svim Include-ovima za tabelu)
        // [Authorize(Roles = "Koordinator")]

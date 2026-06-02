@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using WebTemplate.Services;
 using WebTemplate.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 
 namespace WebTemplate.Controllers
@@ -18,62 +20,76 @@ namespace WebTemplate.Controllers
             ClanService = clanService;
         }
 
-        // Vraća sve članove (opciono sortirane po broju zadataka)
-        // Poziv: GET /api/Clan?sortiraj=true
-        [HttpGet("vratiSveClanove")]
-        public async Task<ActionResult<IEnumerable<Clan>>> GetSve([FromQuery] bool opadajuce)
-        {
-            var rezultati = await ClanService.VratiSveClanoveAsync(opadajuce);
-            return Ok(rezultati);
-        }
+    //objedinjeni filteri za status i broj izvresnih zadataka tako da moze da se vrati i po oba kriterijuma
+   [HttpGet("vratiSveClanove")]
+public async Task<ActionResult<IEnumerable<Clan>>> GetSve(
+    [FromQuery] bool? opadajuce,
+    [FromQuery] Status? status)
+{
+    var rezultati =
+        await ClanService.VratiSveClanoveAsync(
+            opadajuce,
+            status);
 
-        // Vraća članove po statusu (Slobodan=0, Zauzet=1, Nedostupan=2)
-        // Poziv: GET /api/Clan/status/0
-        [HttpGet("statusClanovi/{status}")]
-        public async Task<ActionResult<IEnumerable<Clan>>> GetPoStatusu(Status status)
-        {
-            var rezultati = await ClanService.VratiClanovePoStatusuAsync(status);
-            return Ok(rezultati);
-        }
+    return Ok(rezultati);
+}
 
-        //   [Authorize(Roles = "Clan")]
-       
+    
+
+        // Omogućava promenu statusa u bilo kom trenutku.
+        // Pored izmene na samom članu, automatski cepa i prilagođava termine u tabeli dostupnosti.
+        // [Authorize(Roles = "Clan")]
         [HttpPatch("PromeniStatus/{id}")]
         public async Task<IActionResult> UpdateStatus(int id, [FromQuery] Status noviStatus)
         {
             try 
             {
                 await ClanService.PromeniStatusClanaAsync(id, noviStatus);
-                return Ok(new { poruka = "Status uspešno promenjen." });
+                return Ok(new { poruka = "Status uspešno promenjen i sinhronizovan sa satnicom." });
             }
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
             }
         }
-        [HttpGet("VratiClana{id}")]
-public async Task<ActionResult<Clan>> GetPoId(int id)
-{
-    var clan = await ClanService.VratiClanaPoIdAsync(id);
 
-    if (clan == null)
-        return NotFound("Član nije pronađen.");
+        // Vraća profil ulogovanog člana sa osveženim trenutnim statusom
+        [HttpGet("MojProfil")]
+        public async Task<IActionResult> MojProfil()
+        {
+            try
+            {
+                var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userIdStr))
+                    return Unauthorized("Korisnik nije autorizovan.");
 
-    return Ok(clan);
-}
+                var userId = int.Parse(userIdStr);
+                var clan = await ClanService.VratiClanaPoIdAsync(userId);
 
-[HttpGet("pretragaClanovaPoImenuIPrezimenu")]
-public async Task<ActionResult<Clan>> GetPoImenuIPrezimenu(
-    [FromQuery] string ime,
-    [FromQuery] string prezime)
-{
-    var clan = await ClanService
-        .VratiClanaPoImenuIPrezimenuAsync(ime, prezime);
+                if (clan == null)
+                    return NotFound("Član nije pronađen.");
 
-    if (clan == null)
-        return NotFound("Član nije pronađen.");
+                return Ok(clan);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-    return Ok(clan);
-}
+       
+        [HttpGet("pretragaClanovaPoImenuIPrezimenu")]
+        public async Task<ActionResult<Clan>> GetPoImenuIPrezimenu(
+            [FromQuery] string ime,
+            [FromQuery] string prezime)
+        {
+            var clan = await ClanService.VratiClanaPoImenuIPrezimenuAsync(ime, prezime);
+
+            if (clan == null)
+                return NotFound("Član nije pronađen.");
+
+            return Ok(clan);
+        }
+     
     }
 }

@@ -21,6 +21,7 @@ namespace WebTemplate.Data
      public DbSet<Zahtev> Zahtevi{ get; set; }
     public DbSet<Predavac> Predavaci { get; set; }
    public DbSet<Notifikacija> Notifikacije { get; set; }
+   public DbSet<ListaDashboard> Liste { get; set; }
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

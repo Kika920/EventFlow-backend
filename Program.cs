@@ -28,8 +28,9 @@ builder.Services.AddScoped<IKoordinatorRepository, KoordinatorRepository>();
 builder.Services.AddScoped<IDeoRepository, DeoRepository>();
 builder.Services.AddScoped<ISesijaRepository, SesijaRepository>();
 builder.Services.AddScoped<IVremeDostupnostiRepository, VremeDostupnostiRepository>();
+builder.Services.AddScoped<IListaDashboardRepository,  ListaDashboardRepository>();
 
-
+builder.Services.AddScoped<IListaDashboardService, ListaDashboardService>();
 builder.Services.AddScoped<IKorisnikService, KorisnikService>();
 builder.Services.AddScoped<IDogadjajService, DogadjajService>();
 builder.Services.AddScoped<IAgendaService, AgendaService>();
